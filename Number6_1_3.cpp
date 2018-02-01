@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : Number6_1_2.cpp
+// Name        : Number6_1_3.cpp
 // Author      : grand
 // Version     :
 // Copyright   : 
