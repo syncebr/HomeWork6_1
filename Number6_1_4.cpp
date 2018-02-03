@@ -1,4 +1,3 @@
-
 /*Даны два массива, упорядоченных по возрастанию: А[n] и B[m].
 Сформируйте массив C[n+m], состоящий из элементов массивов А и В, упорядоченный по возрастанию.
 Способ, заключающийся в том, что все скидывается в один массив, а потом сортируется, не подходит!
@@ -9,44 +8,54 @@
 
 using namespace std;
 
-void GenerateArr(int arr[],int size);
+void GenerateArr(int arr[], int size);
 void PrintArr(int arr[], int size, int col);
-void SortArr(int arr[],int size);
+void SortArr(int arr[], int size);
 
 int main(void) {
 	setlocale(LC_ALL, "rus");
+	srand(time(0));
 	const int SIZE1 = 5;
 	const int SIZE2 = 8;
-	const int SIZE3 = SIZE1 + SIZE2;
-	int arr1[SIZE1] = {}, arr2[SIZE2] = {}, arr3[SIZE3] = {};
-	int *ptr1=arr1,*ptr2=arr2,*ptr3=arr3;
+	const int SIZE3 = 13;
+	int arr1[SIZE1] = {0}, arr2[SIZE2] = {0}, arr3[SIZE3] = {0};
+	int *ptr1, *ptr2, *ptr3,*ptrTmp;
+	ptr1 = arr1;
+	ptr2 = arr2;
+	ptr3 = arr3;
 	int col;
 	cout << "Сколько элементов отображать в одной строке?    -->";
 	cin >> col;
 	GenerateArr(arr1, SIZE1);
-	GenerateArr(arr2, SIZE2);
 	SortArr(arr1, SIZE1);
+	GenerateArr(arr2, SIZE2);
 	SortArr(arr2, SIZE2);
-	cout<<"первый массив:"<<endl;
-	PrintArr(arr1, SIZE1,col);
+	cout << "первый массив:" << endl;
+	PrintArr(arr1, SIZE1, col);
 	cout << "второй массив:" << endl;
-	PrintArr(arr2, SIZE2,col);
-	int i = 0;
-	while ((ptr1<ptr1+SIZE1)&&(ptr2<ptr2+SIZE2)) {
-		//пока не закончится первый(меньший массив)
-		if (*ptr1 < *ptr2) {
+	PrintArr(arr2, SIZE2, col);
+	//склейка массивов пока один из неих не закончится
+	while ((ptr1<arr1 + SIZE1) && (ptr2<(arr2 + SIZE2))) {	
+		if (*ptr1 <= *ptr2) {
 			*ptr3 = *ptr1;
 			ptr1++;
 		}
-		if (*ptr1 > *ptr2) {
+		else {
 			*ptr3 = *ptr2;
 			ptr2++;
 		}
-		//когда закончился первый массив
-		if (ptr1 >= ptr1 + SIZE1) {
-			*ptr3 = *ptr2;
-		}
-		i++;
+		ptr3++;
+	}
+	//на случай если первым закончился 2 массив
+	while (ptr1 <( arr1 + SIZE1)&&ptr3<(arr3+SIZE3)) {
+		*ptr3 = *ptr1;
+		ptr1++;
+		ptr3++;	
+	}
+	//на случай если первым закончился 1-ймассив
+	while (ptr2 < (arr2 + SIZE2) && ptr3<(arr3 + SIZE3)) {
+		*ptr3 = *ptr2;
+		ptr2++;
 		ptr3++;
 	}
 	cout << "Третий массив:" << endl;
@@ -56,12 +65,11 @@ int main(void) {
 
 void GenerateArr(int arr[], int size) {
 	int *ptr = arr;
-	srand(time(0));
 	for (int i = 0; i < size; i++, ptr++)
 		*ptr = rand() % 101;
 }
 
-void PrintArr(int arr[], int size,int col) {
+void PrintArr(int arr[], int size, int col) {
 	int *ptr = arr;
 	int counter = 0;
 	for (int i = 0; i < size; i++, ptr++) {
@@ -73,7 +81,7 @@ void PrintArr(int arr[], int size,int col) {
 }
 
 void SortArr(int arr[], int size) {
-	int tmp,j;
+	int tmp, j;
 	for (int i = 0; i<size - 1; i++) //i-номер последнего из упорядоченных
 	{
 		tmp = arr[i + 1]; //сохранить копию вставляемого элемента
